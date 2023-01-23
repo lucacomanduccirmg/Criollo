@@ -226,13 +226,15 @@ NS_ASSUME_NONNULL_END
     NSString *keychainPassword = self.keychainPassword;
     
     SecAccessRef access = NULL;
-    OSStatus accessCreationStatus = SecAccessCreate((CFStringRef)keychainPath.lastPathComponent, nil, &access);
+    OSStatus accessCreationStatus = SecAccessCreate((CFStringRef)keychainPath.lastPathComponent, NULL, &access);
     if ( accessCreationStatus != errSecSuccess ) {
         return NULL;
     }
     
-    SecACLRef newDecryptACLRef = NULL;
-    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, (CFArrayRef)@[], (CFStringRef)keychainPath.lastPathComponent, 0, &newDecryptACLRef);
+    SecKeychainPromptSelector promptSelector = kSecKeychainPromptInvalid;
+    
+    SecACLRef newDecryptACLRef;
+    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, (CFArrayRef)@[], (CFStringRef)keychainPath.lastPathComponent, promptSelector, &newDecryptACLRef);
     if ( aclCreationStatus != errSecSuccess ) {
         return NULL;
     }
