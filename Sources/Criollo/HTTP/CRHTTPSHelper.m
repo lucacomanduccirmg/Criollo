@@ -232,7 +232,7 @@ NS_ASSUME_NONNULL_END
     }
     
     SecACLRef newDecryptACLRef = NULL;
-    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, (CFArrayRef)@[], (CFStringRef)keychainPath.lastPathComponent, nil, &newDecryptACLRef);
+    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, (CFArrayRef)@[], (CFStringRef)keychainPath.lastPathComponent, 0, &newDecryptACLRef);
     if ( aclCreationStatus != errSecSuccess ) {
         return NULL;
     }
