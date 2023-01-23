@@ -230,12 +230,12 @@ NS_ASSUME_NONNULL_END
     CFStringRef descriptor = (__bridge CFStringRef)keychainPath.lastPathComponent;
     
     SecAccessRef access = NULL;
-    OSStatus accessCreationStatus = SecAccessCreate(descriptor, nil, &access);
+    OSStatus accessCreationStatus = SecAccessCreate(descriptor, NULL, &access);
     if ( accessCreationStatus != errSecSuccess ) {
         return NULL;
     }
     
-    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, nil, descriptor, nil, &newDecryptACLRef);
+    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, NULL, descriptor, NULL, &newDecryptACLRef);
     if ( aclCreationStatus != errSecSuccess ) {
         return NULL;
     }
