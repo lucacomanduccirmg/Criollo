@@ -219,7 +219,6 @@ NS_ASSUME_NONNULL_END
     }
     return _keychainPassword;
 }
-
 - (SecKeychainRef)setupKeychain {
 
     NSString *keychainPath = self.keychainPath;
