@@ -226,7 +226,7 @@ NS_ASSUME_NONNULL_END
     NSString *keychainPath = self.keychainPath;
     NSString *keychainPassword = self.keychainPassword;
     
-    SecACLRef newDecryptACLRef;
+//    SecACLRef newDecryptACLRef;
     CFStringRef descriptor = (__bridge CFStringRef)keychainPath.lastPathComponent;
     
     SecAccessRef access = NULL;
@@ -234,12 +234,12 @@ NS_ASSUME_NONNULL_END
     if ( accessCreationStatus != errSecSuccess ) {
         return NULL;
     }
-    
+    /*
     OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, NULL, descriptor, NULL, &newDecryptACLRef);
     if ( aclCreationStatus != errSecSuccess ) {
         return NULL;
     }
-    
+    */
     SecKeychainRef keychain = NULL;
     OSStatus keychainCreationStatus = SecKeychainCreate(keychainPath.UTF8String, (UInt32)keychainPassword.length, keychainPassword.UTF8String, NO, access, &keychain);
     if ( keychainCreationStatus != errSecSuccess ) {
