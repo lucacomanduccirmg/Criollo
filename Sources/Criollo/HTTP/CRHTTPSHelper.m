@@ -207,7 +207,7 @@ NS_ASSUME_NONNULL_END
 
 - (NSString *)keychainPath {
     if ( _keychainPath.length == 0 ) {
-        NSString *dirPath = NSTemporaryDirectory()
+        NSString *dirPath = NSTemporaryDirectory();
         _keychainPath = [dirPath stringByAppendingPathComponent:NSUUID.UUID.UUIDString];
     }
     return _keychainPath;
