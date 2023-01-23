@@ -207,7 +207,7 @@ NS_ASSUME_NONNULL_END
 
 - (NSString *)keychainPath {
     if ( _keychainPath.length == 0 ) {
-        NSString *dirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject; //NSTemporaryDirectory()
+        NSString *dirPath = NSTemporaryDirectory()
         _keychainPath = [dirPath stringByAppendingPathComponent:NSUUID.UUID.UUIDString];
     }
     return _keychainPath;
@@ -220,17 +220,26 @@ NS_ASSUME_NONNULL_END
     return _keychainPassword;
 }
 
+
 - (SecKeychainRef)setupKeychain {
 
     NSString *keychainPath = self.keychainPath;
     NSString *keychainPassword = self.keychainPassword;
-
+    
+    SecACLRef newDecryptACLRef;
+    CFStringRef descriptor = (__bridge CFStringRef)keychainPath.lastPathComponent;
+    
     SecAccessRef access = NULL;
-    OSStatus accessCreationStatus = SecAccessCreate((CFStringRef)keychainPath.lastPathComponent, NULL, &access);
+    OSStatus accessCreationStatus = SecAccessCreate(descriptor, nil, &access);
     if ( accessCreationStatus != errSecSuccess ) {
         return NULL;
     }
-  
+    
+    OSStatus aclCreationStatus = SecACLCreateFromSimpleContents(access, nil, descriptor, nil, &newDecryptACLRef);
+    if ( aclCreationStatus != errSecSuccess ) {
+        return NULL;
+    }
+    
     SecKeychainRef keychain = NULL;
     OSStatus keychainCreationStatus = SecKeychainCreate(keychainPath.UTF8String, (UInt32)keychainPassword.length, keychainPassword.UTF8String, NO, access, &keychain);
     if ( keychainCreationStatus != errSecSuccess ) {
